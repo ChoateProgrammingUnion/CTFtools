@@ -20,7 +20,7 @@ def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
     return n.to_bytes(int(math.ceil(math.log2(n) // 8) + 1), endian)
 
 
-def repr_to_chars(repr: str, base: int = None, endian='big') -> str:
+def repr_to_str(repr: str, base: int = None, endian='big') -> str:
     return repr_to_bytes(repr, base, endian).decode('latin1', )
 
 
@@ -28,24 +28,24 @@ def hex_to_bytes(repr: str, endian='big'):
     return repr_to_bytes(repr, 16, endian)
 
 
-def hex_to_chars(repr: str, endian='big') -> str:
-    return repr_to_chars(repr, 16, endian)
+def hex_to_str(repr: str, endian='big') -> str:
+    return repr_to_str(repr, 16, endian)
 
 
 def dec_to_bytes(repr: str, endian='big') -> bytes:
     return repr_to_bytes(repr, 10, endian)
 
 
-def dec_to_chars(repr: str, endian='big') -> str:
-    return repr_to_chars(repr, 10, endian)
+def dec_to_str(repr: str, endian='big') -> str:
+    return repr_to_str(repr, 10, endian)
 
 
 def bin_to_bytes(repr: str, endian='big') -> bytes:
     return repr_to_bytes(repr, 2, endian)
 
 
-def bin_to_chars(repr: str, endian='big') -> str:
-    return repr_to_chars(repr, 2, endian)
+def bin_to_str(repr: str, endian='big') -> str:
+    return repr_to_str(repr, 2, endian)
 
 
 def hex_to_int(repr: str) -> int:
