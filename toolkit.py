@@ -20,7 +20,7 @@ def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
     return n.to_bytes(int(math.ceil(math.log2(n) // 8) + 1), endian)
 
 
-def repr_to_str(repr: str, base: int = None, endian='big') -> str:
+def repr_to_chars(repr: str, base: int = None, endian='big') -> str:
     return repr_to_bytes(repr, base, endian).decode('latin1', )
 
 
@@ -28,24 +28,24 @@ def hex_to_bytes(repr: str, endian='big'):
     return repr_to_bytes(repr, 16, endian)
 
 
-def hex_to_str(repr: str, endian='big') -> str:
-    return repr_to_str(repr, 16, endian)
+def hex_to_chars(repr: str, endian='big') -> str:
+    return repr_to_chars(repr, 16, endian)
 
 
-def decimal_to_bytes(repr: str, endian='big') -> bytes:
+def dec_to_bytes(repr: str, endian='big') -> bytes:
     return repr_to_bytes(repr, 10, endian)
 
 
-def decimal_to_str(repr: str, endian='big') -> str:
-    return repr_to_str(repr, 10, endian)
+def dec_to_chars(repr: str, endian='big') -> str:
+    return repr_to_chars(repr, 10, endian)
 
 
-def binary_to_bytes(repr: str, endian='big') -> bytes:
+def bin_to_bytes(repr: str, endian='big') -> bytes:
     return repr_to_bytes(repr, 2, endian)
 
 
-def binary_to_str(repr: str, endian='big') -> str:
-    return repr_to_str(repr, 2, endian)
+def bin_to_chars(repr: str, endian='big') -> str:
+    return repr_to_chars(repr, 2, endian)
 
 
 def hex_to_int(repr: str) -> int:
@@ -104,7 +104,9 @@ def hex_to_bin(repr: str, sep: int = 8) -> str:
 def scan_sourcecode(path):
     with tempfile.NamedTemporaryFile() as tmp:
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        subprocess.run('flawfinder --context --html %s' % path, stdout=tmp, shell=True)
+        proc=subprocess.run('flawfinder --context --html %s' % path, stdout=tmp, shell=True)
+        if proc.returncode==127:
+            raise SystemExit('Please run `pip install flawfinder` first')
         tmp.flush()
         os.system('open %s' % tmp.name)
         time.sleep(2)  # wait to open the file
