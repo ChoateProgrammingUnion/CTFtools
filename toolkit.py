@@ -101,7 +101,7 @@ def hex_to_bin(repr: str, sep: int = 8) -> str:
     return int_to_bin(n, sep)
 
 
-def scan_sourcecode(path):
+def scan_file(path):
     with tempfile.NamedTemporaryFile() as tmp:
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         proc=subprocess.run('flawfinder --context --html %s' % path, stdout=tmp, shell=True)
