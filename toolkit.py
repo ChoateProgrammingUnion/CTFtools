@@ -112,21 +112,21 @@ def scan_file(path):
         os.system('open %s' % tmp.name)
         time.sleep(2)  # wait to open the file
 
-def egcd(a, b):
+def egcd(a: int, b: int):
     if a == 0:
         return (b, 0, 1)
     else:
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
 
-def modinv(a, m):
+def modinv(a: int, m: int):
     g, x, y = egcd(a, m)
     if g != 1:
         raise Exception('modular inverse does not exist')
     else:
         return x % m
 
-def lcm(a, b):
+def lcm(a: int, b: int):
     """Compute the lowest common multiple of a and b"""
     return a * b // gcd(a, b)
 
@@ -141,3 +141,20 @@ def prime_sieve(n):
     Finds all primes from 1 until n
     """
     return pyprimesieve.primes(int(n))
+
+def send(r, msg):
+    """
+    Sends string to server
+    Example setup:
+    r = remote('2018shell2.picoctf.com', 50430)
+    """
+    r.send(msg + '\n')
+
+def interact(r):
+    """
+    Interacts with server
+    Example setup:
+    r = remote('2018shell2.picoctf.com', 50430)
+    """
+    r.interactive()
+    exit(0)
