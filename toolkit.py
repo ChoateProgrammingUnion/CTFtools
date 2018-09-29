@@ -120,6 +120,9 @@ def egcd(a: int, b: int):
         return (g, x - (b // a) * y, y)
 
 def modinv(a: int, m: int):
+    """
+    Finds the modular inverse given a number (a) and a modulus (m)
+    """
     g, x, y = egcd(a, m)
     if g != 1:
         raise Exception('modular inverse does not exist')
