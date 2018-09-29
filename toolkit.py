@@ -1,9 +1,6 @@
 
 import re, math, warnings, os, tempfile, subprocess, time
 
-import pwn, re, math, warnings, os, tempfile, subprocess, time
-
-
 def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
     s = re.sub(r'\s', '', repr).lower()
     if not base:
