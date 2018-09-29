@@ -1,4 +1,5 @@
 import pwn, re, math, warnings, os, tempfile, subprocess, time
+import pyprimesieve
 
 
 def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
@@ -111,3 +112,32 @@ def scan_file(path):
         os.system('open %s' % tmp.name)
         time.sleep(2)  # wait to open the file
 
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+def modinv(a, m):
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception('modular inverse does not exist')
+    else:
+        return x % m
+
+def lcm(a, b):
+    """Compute the lowest common multiple of a and b"""
+    return a * b // gcd(a, b)
+
+def factorize(n):
+    """
+    Factorizes the number given
+    """
+    return pyprimesieve.factorize(int(n))
+
+def prime_sieve(n):
+    """
+    Finds all primes from 1 until n
+    """
+    return pyprimesieve.primes(int(n))
