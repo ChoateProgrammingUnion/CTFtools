@@ -1,4 +1,4 @@
-import pwn, re, math, warnings, os, tempfile, subprocess, time
+import re, math, warnings, os, tempfile, subprocess, time
 
 
 def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
@@ -17,7 +17,10 @@ def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
             base = 2
         warnings.warn('No explicit base specified. Decoded %s using base %d' % (repr, base))
     n = int(s, base)
-    return n.to_bytes(int(math.ceil(math.log2(n) // 8) + 1), endian)
+    if n!=0:
+        return n.to_bytes(int(math.ceil(math.log2(n) // 8) + 1), endian)
+    else:
+        return b'\0'
 
 
 def repr_to_str(repr: str, base: int = None, endian='big') -> str:
@@ -95,6 +98,9 @@ def int_to_bin(n: int, sep: int = 8) -> str:
         return res.strip()
     return s
 
+def int_to_str(n: int) -> str:
+    return dec_to_str(str(n))
+
 
 def hex_to_bin(repr: str, sep: int = 8) -> str:
     n = hex_to_int(repr)
@@ -111,3 +117,9 @@ def scan_file(path):
         os.system('open %s' % tmp.name)
         time.sleep(2)  # wait to open the file
 
+def connect(port):
+    import pwn
+    address='2018shell2.picoctf.com'
+    r=pwn.remote(address,port)
+    r.interactive()
+    return r
