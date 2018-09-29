@@ -1,4 +1,7 @@
+
 import re, math, warnings, os, tempfile, subprocess, time
+
+import pwn, re, math, warnings, os, tempfile, subprocess, time
 
 
 def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
@@ -117,9 +120,66 @@ def scan_file(path):
         os.system('open %s' % tmp.name)
         time.sleep(2)  # wait to open the file
 
+
 def connect(port):
     import pwn
     address='2018shell2.picoctf.com'
     r=pwn.remote(address,port)
     r.interactive()
     return r
+
+def egcd(a: int, b: int):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+def modinv(a: int, m: int):
+    """
+    Finds the modular inverse given a number (a) and a modulus (m)
+    """
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception('modular inverse does not exist')
+    else:
+        return x % m
+
+def lcm(a: int, b: int):
+    """Compute the lowest common multiple of a and b"""
+    return a * b // gcd(a, b)
+
+def factorize(n):
+    """
+    Factorizes the number given
+    """
+    import pyprimesieve
+    return pyprimesieve.factorize(int(n))
+
+def prime_sieve(n):
+    """
+    Finds all primes from 1 until n
+    """
+    import pyprimesieve
+    return pyprimesieve.primes(int(n))
+
+def send(r, msg):
+    """
+    Sends string to server
+    Example setup:
+    r = remote('2018shell2.picoctf.com', 50430)
+    """
+    r.send(msg + '\n')
+
+def interact(r):
+    """
+    Interacts with server
+    Example setup:
+    r = remote('2018shell2.picoctf.com', 50430)
+    """
+    r.interactive()
+    exit(0)
+
+def recv_line(r):
+    return r.recvline().decode()
+
