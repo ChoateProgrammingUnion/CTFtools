@@ -158,3 +158,6 @@ def interact(r):
     """
     r.interactive()
     exit(0)
+
+def recv_line(r):
+    return r.recvline().decode()
