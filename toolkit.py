@@ -166,7 +166,7 @@ def send(r, msg):
     Example setup:
     r = remote('2018shell2.picoctf.com', 50430)
     """
-    r.send(msg + '\n')
+    r.send(str(msg) + '\n')
 
 def interact(r):
     """
