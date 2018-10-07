@@ -185,4 +185,4 @@ def throwaway(r, n: int):
     Throw away n lines. Does not return anything.
     """
     for i in range(n-1):
-        r.recv_line()
+        recv_line(r)
