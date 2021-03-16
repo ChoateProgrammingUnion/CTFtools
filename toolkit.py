@@ -1,5 +1,4 @@
-
-import re, math, warnings, os, tempfile, subprocess, time
+import re, math, warnings, os, tempfile, subprocess, time, string
 
 def repr_to_bytes(repr: str, base: int = None, endian='big') -> bytes:
     s = re.sub(r'\s', '', repr).lower()
@@ -120,9 +119,8 @@ def scan_file(path):
 
 def connect(port):
     import pwn
-    address='2018shell2.picoctf.com'
+    address='mercury.picoctf.net'
     r=pwn.remote(address,port)
-    r.interactive()
     return r
 
 def egcd(a: int, b: int):
@@ -186,3 +184,29 @@ def throwaway(r, n: int):
     """
     for i in range(n-1):
         recv_line(r)
+
+def b16_decode(plain):
+    LOWERCASE_OFFSET = ord("a")
+    ALPHABET = string.ascii_lowercase[:16]
+    hex_alphabet = []
+    string_hex = []
+    for count, v in enumerate(plain):
+        string_hex.append(ord(v) - LOWERCASE_OFFSET)
+
+    result = ""
+    for value in string_hex:
+        result += int_to_hex(value, 0)
+
+    return hex_to_str(result)
+
+
+def b16_encode(plain):
+    LOWERCASE_OFFSET = ord("a")
+    ALPHABET = string.ascii_lowercase[:16]
+    enc = ""
+    for c in plain:
+            binary = "{0:08b}".format(ord(c))
+            enc += ALPHABET[int(binary[:4], 2)]
+            enc += ALPHABET[int(binary[4:], 2)]
+    return enc
+
